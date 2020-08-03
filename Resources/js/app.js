@@ -7,7 +7,6 @@ var tbody = d3.select("tbody");
 // Clear existing data
 function buildTable(data) {
     tbody.html("");
-  }
 
 // Next loop through each object in the data and append a row and cells for each value in the row
 data.forEach((dataRow) => {
@@ -18,6 +17,41 @@ data.forEach((dataRow) => {
     Object.values(dataRow).forEach((val) => {
         let cell = row.append("td");
         cell.text(val);
+        });
+    });
+}
+// New function creation called handleclick
+function handleClick() { 
+    var filters = {datetime: null,
+    city: null,
+    state: null,
+    country: null,
+    shape: null
+    };
+    Object.keys(filters).forEach((key) => {
+        dataFilter = d3.select("#", concat(key)).property("value");
+        if (dataFilter) {
+            filters[key]=dataFilter.toLowerCase();
         }
-      );
-});
+        else {
+            delete filters[key];
+        }
+    });
+    
+    filterTable(filters);
+}
+function filterTable(filters)  {
+    var filteredData = tableData;
+    Object.keys(filters).forEach((key) => {
+        if (filters[key]) {
+            filteredData = filteredData.filter(row => row[key] === filters[key]);
+        }
+    });
+    buildTable(filteredData);
+}
+
+d3.selectAll("input").on("change", handleClick);
+d3.selectAll("#filter-btn").on("click", handleClick);
+
+// Build the table when the page loads
+buildTable(tableData);
