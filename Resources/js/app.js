@@ -22,11 +22,7 @@ data.forEach((dataRow) => {
 }
 // New function creation called handleclick
 function handleClick() { 
-    var filters = {datetime: null,
-    city: null,
-    state: null,
-    country: null,
-    shape: null
+    var filters = {datetime: null, city: null, state: null, country: null, shape: null
     };
     Object.keys(filters).forEach((key) => {
         dataFilter = d3.select("#", concat(key)).property("value");
